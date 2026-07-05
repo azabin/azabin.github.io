@@ -126,11 +126,11 @@
         <div class="tldr">
             <h2>The short version 🐱</h2>
             <ul>
-                <li>We do <strong>not</strong> collect, store, or share any personal information.</li>
-                <li>Catricket works fully <strong>offline</strong> — it has no internet access.</li>
-                <li>There are <strong>no ads</strong>, no analytics, and no third-party trackers.</li>
-                <li>Your settings and high scores are saved <strong>only on your device</strong>.</li>
-                <li>The Game requests <strong>no special permissions</strong>.</li>
+                <li>We do <strong>not</strong> collect personal information such as your name, email or location.</li>
+                <li>The current testing release shows <strong>no ads</strong> and makes no network connections.</li>
+                <li>A <strong>future update will add Google AdMob ads</strong>, which use your device's resettable advertising ID to show and measure ads.</li>
+                <li>Your settings and high scores are saved <strong>on your device</strong>.</li>
+                <li>We are upfront about the permissions the app requests and why.</li>
             </ul>
         </div>
 
@@ -149,11 +149,23 @@
         <p>High scores are labelled with a fixed placeholder name ("Player"); the Game does not ask you to
         enter a real name and stores no personal identifier. This data stays on your device and is never
         sent to us or to anyone else.</p>
+        <p><strong>Advertising identifier (planned):</strong> The current testing release does not use it. A
+        future update will introduce Google AdMob (see section 4); at that point Google's Mobile Ads SDK may
+        access your device's <em>advertising ID</em> to show and measure ads. The advertising ID is a
+        resettable, non-permanent identifier managed by your device — we do not link it to your identity. We
+        are disclosing this in advance so you know what to expect.</p>
 
         <h2><span class="n">2.</span> Permissions</h2>
-        <p>Catricket requests <strong>no Android runtime or install-time permissions</strong>. In particular,
-        it does <strong>not</strong> request the <code>INTERNET</code> permission, so the Game cannot connect
-        to the network, our servers, or any third party.</p>
+        <p>Catricket requests only the permissions needed for its planned Google AdMob integration. It requests
+        <strong>no</strong> access to your location, contacts, camera, microphone, photos, or storage.</p>
+        <ul class="body">
+            <li><code>com.google.android.gms.permission.AD_ID</code> — allows access to your device's
+            advertising ID for the planned ads. On Android 13+ this permission is required or the advertising
+            ID is zeroed out.</li>
+            <li><code>android.permission.INTERNET</code> and <code>android.permission.ACCESS_NETWORK_STATE</code>
+            — reserved for the Mobile Ads SDK to request and display ads once that feature ships. The current
+            testing build makes no network connections.</li>
+        </ul>
 
         <h2><span class="n">3.</span> Device Backup</h2>
         <p>Android's built-in <strong>Auto Backup</strong> feature may include the Game's local settings and
@@ -163,15 +175,26 @@
         Settings (typically <em>System &gt; Backup</em>), and any such backup is governed by
         <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's Privacy Policy</a>.</p>
 
-        <h2><span class="n">4.</span> Third-Party Services</h2>
-        <p>The Game does <strong>not</strong> integrate any third-party services that collect data. There are
-        no advertising networks, no analytics or crash-reporting SDKs, and no social-media integrations.</p>
+        <h2><span class="n">4.</span> Advertising &amp; Third-Party Services</h2>
+        <p>The current testing release contains <strong>no ads</strong>, no analytics or crash-reporting SDKs,
+        and no social-media integrations.</p>
+        <p><strong>Planned Google AdMob ads:</strong> A future update will introduce ads served through
+        <strong>Google AdMob</strong>, Google's mobile advertising service. When that feature is live, Google's
+        Mobile Ads SDK may collect and process your device's advertising ID together with limited technical
+        information (such as device type, general location inferred from IP, and ad interactions) in order to
+        serve and measure ads. This processing is carried out by Google as described in the
+        <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">How Google uses information</a>
+        and <a href="https://support.google.com/admob/answer/6128543" target="_blank" rel="noopener">AdMob</a> policies.</p>
+        <p><strong>Your choices:</strong> You can reset or delete your advertising ID, and opt out of ad
+        personalisation, in your device's <em>Settings &gt; Privacy &gt; Ads</em>. We will update this policy
+        and our Google Play <em>Data Safety</em> declaration before ads are released.</p>
 
         <h2><span class="n">5.</span> Children's Privacy</h2>
-        <p>Catricket is family-friendly and suitable for children. Because the Game collects no personal
-        information from anyone, it does not knowingly collect data from children. We comply with the
-        Children's Online Privacy Protection Act (<strong>COPPA</strong>) and Google Play's Families policy.
-        If you are a parent or guardian and have any questions, please contact us using the details below.</p>
+        <p>Catricket is family-friendly and suitable for children. The current release collects no personal
+        information from anyone. We comply with the Children's Online Privacy Protection Act (<strong>COPPA</strong>)
+        and Google Play's Families policy. When advertising is introduced, any ads will be configured to serve
+        only age-appropriate, non-personalised content in line with the Families policy. If you are a parent or
+        guardian and have any questions, please contact us using the details below.</p>
 
         <h2><span class="n">6.</span> Data Retention &amp; Deletion</h2>
         <p>Because all Game data lives only on your device, <strong>you are always in full control</strong>:</p>
@@ -181,15 +204,20 @@
             <li>Uninstalling the Game removes all of its local data from your device.</li>
             <li>To remove any copy held in a device backup, manage or delete your backup in your device and
             Google account settings.</li>
+            <li>Once ads are introduced, you can reset or delete your advertising ID in your device's
+            <em>Settings &gt; Privacy &gt; Ads</em>.</li>
         </ul>
 
         <h2><span class="n">7.</span> Data Security</h2>
-        <p>Since Catricket does not collect or transmit information over the internet, your Game data is as
-        secure as your device. It is stored in the app's private storage area, which other apps cannot access.</p>
+        <p>The current release stores its data only in the app's private storage area, which other apps cannot
+        access, and transmits nothing over the internet. When ads are added, ad requests are handled securely by
+        Google's Mobile Ads SDK over encrypted connections.</p>
 
         <h2><span class="n">8.</span> Google Play Data Safety</h2>
-        <p>Consistent with this policy, our Google Play <em>Data Safety</em> declaration states that Catricket
-        <strong>does not collect or share any user data</strong>.</p>
+        <p>For the current testing release, our Google Play <em>Data Safety</em> declaration states that Catricket
+        <strong>collects no data</strong>. Because we have declared upcoming use of the advertising ID, we will
+        update the Data Safety form to reflect that an advertising ID is collected and shared for advertising
+        purposes <strong>before</strong> the AdMob update is released to users.</p>
 
         <h2><span class="n">9.</span> Changes to This Privacy Policy</h2>
         <p>We may update this Privacy Policy from time to time. Any changes will be posted on this page with an
