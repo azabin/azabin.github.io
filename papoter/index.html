@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Papoter — Private AI chat for Android</title>
+<meta name="description" content="Papoter is a privacy-first Android chat app for AI models — fully on-device with llama.cpp, or over Ollama and Ollama Cloud. Generate images and music, analyse photos, read PDFs, and chat offline.">
+<link rel="icon" type="image/png" href="img/app_icon_512.png">
+<style>
+  :root{
+    --green-900:#22382a; --green-800:#2b4232; --green-700:#446049;
+    --green-500:#6e8a72; --green-300:#9db8a1;
+    --cream:#f4f1e8; --cream-2:#efeadd; --sand:#e7e1d1; --card:#ffffff;
+    --ink:#24302a; --muted:#59635c; --line:#e3decf;
+    --radius:18px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--cream);line-height:1.6;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+  .btn{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:13px 24px;
+    font-weight:700;font-size:.98rem;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease;border:none}
+  .btn-primary{background:#fff;color:var(--green-800)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.18)}
+  .btn-ghost{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.35)}
+  .btn-ghost:hover{background:rgba(255,255,255,.2)}
+
+  /* NAV */
+  nav{position:sticky;top:0;z-index:50;background:rgba(244,241,232,.85);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:1.2rem;color:var(--green-800)}
+  .logo{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;
+    background:#fff;padding:4px;box-shadow:0 1px 3px rgba(0,0,0,.14)}
+  .logo svg{width:100%;height:100%;display:block}
+  .nav-links{display:flex;gap:26px;font-weight:600;font-size:.94rem;color:var(--muted)}
+  .nav-links a:hover{color:var(--green-800)}
+  @media (max-width:720px){.nav-links{display:none}}
+
+  /* HERO */
+  .hero{position:relative;background:radial-gradient(1200px 500px at 15% -10%,#3a5644,transparent),
+      linear-gradient(140deg,var(--green-900),var(--green-500));color:#fff;overflow:hidden}
+  .hero::after{content:"";position:absolute;right:-140px;top:-140px;width:460px;height:460px;
+    background:radial-gradient(circle,rgba(255,255,255,.14),transparent 60%);border-radius:50%}
+  .hero .wrap{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:40px;
+    align-items:center;padding:70px 24px 84px}
+  .pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:6px 14px;font-size:.82rem;font-weight:600}
+  .hero h1{font-size:3.1rem;line-height:1.08;margin:18px 0 14px;letter-spacing:-.5px}
+  .hero h1 .accent{color:#dfe9df}
+  .hero p.lead{font-size:1.18rem;opacity:.92;margin:0 0 26px;max-width:520px}
+  .hero .cta{display:flex;gap:12px;flex-wrap:wrap}
+  .hero .subnote{margin-top:18px;font-size:.85rem;opacity:.8}
+  .hero-art{position:relative;display:flex;justify-content:center;gap:18px}
+  @media (max-width:860px){
+    .hero .wrap{grid-template-columns:1fr;text-align:center;padding:54px 24px 64px}
+    .hero h1{font-size:2.3rem}.hero p.lead{margin-inline:auto}
+    .hero .cta{justify-content:center}.hero-art{margin-top:18px}
+  }
+
+  /* PHONE */
+  .phone{width:230px;border-radius:30px;padding:9px;background:#10231a;
+    box-shadow:0 30px 60px rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.08)}
+  .phone img{width:100%;display:block;border-radius:22px}
+  .phone.tilt-l{transform:rotate(-5deg) translateY(10px)}
+  .phone.tilt-r{transform:rotate(5deg) translateY(-6px)}
+  @media (max-width:520px){.phone{width:180px}.phone.tilt-l,.phone.tilt-r{transform:none}.hero-art{gap:10px}}
+
+  /* SECTIONS */
+  section{padding:78px 0}
+  .eyebrow{color:var(--green-500);font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:.78rem}
+  h2.title{font-size:2.1rem;margin:10px 0 12px;color:var(--green-900);letter-spacing:-.3px}
+  .section-intro{color:var(--muted);max-width:640px;font-size:1.05rem}
+  .center{text-align:center}.center .section-intro{margin:0 auto}
+
+  /* FEATURE GRID */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
+  @media (max-width:860px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:560px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:24px;transition:transform .18s ease,box-shadow .18s ease}
+  .card:hover{transform:translateY(-4px);box-shadow:0 16px 34px rgba(43,66,50,.10)}
+  .card .ic{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;font-size:22px;
+    background:var(--cream-2);margin-bottom:14px}
+  .card h3{margin:0 0 6px;font-size:1.1rem;color:var(--green-900)}
+  .card p{margin:0;color:var(--muted);font-size:.96rem}
+
+  /* MODES */
+  .modes{background:var(--cream-2)}
+  .mode-row{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
+  @media (max-width:860px){.mode-row{grid-template-columns:1fr}}
+  .mode{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:26px;position:relative}
+  .mode .num{font-weight:800;color:var(--green-300);font-size:1.4rem}
+  .mode h3{margin:6px 0 8px;color:var(--green-900);font-size:1.18rem}
+  .mode p{margin:0;color:var(--muted);font-size:.96rem}
+  .mode .badge{display:inline-block;margin-top:14px;background:var(--sand);color:var(--green-900);
+    border-radius:999px;padding:4px 12px;font-size:.78rem;font-weight:700}
+
+  /* GALLERY */
+  .gallery{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin-top:44px}
+  .shot{width:240px;border-radius:26px;padding:8px;background:#10231a;box-shadow:0 18px 40px rgba(43,66,50,.18)}
+  .shot img{width:100%;display:block;border-radius:20px}
+  .shot figcaption{color:#cfe0d3;text-align:center;font-size:.82rem;padding:9px 4px 3px;font-weight:600}
+
+  /* PRIVACY STRIP */
+  .privacy{background:linear-gradient(135deg,var(--green-800),var(--green-500));color:#fff;border-radius:26px;
+    padding:48px 40px;display:grid;grid-template-columns:1.2fr .8fr;gap:30px;align-items:center;margin:0 24px}
+  .privacy h2{font-size:1.9rem;margin:8px 0 10px}
+  .privacy p{opacity:.92;margin:0 0 8px}
+  .privacy ul{margin:14px 0 0;padding-left:18px;opacity:.95}
+  .privacy li{margin:6px 0}
+  @media (max-width:760px){.privacy{grid-template-columns:1fr;padding:34px 24px}}
+
+  /* CTA */
+  .cta-final{text-align:center}
+  .cta-final .box{background:var(--card);border:1px solid var(--line);border-radius:26px;padding:52px 30px;
+    max-width:720px;margin:0 auto}
+  .cta-final h2{font-size:2rem;color:var(--green-900);margin:0 0 10px}
+  .cta-final .btn-primary{background:var(--green-800);color:#fff}
+
+  /* FOOTER */
+  footer.site{background:var(--green-900);color:#cfe0d3;padding:46px 0 34px}
+  footer.site .cols{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:30px}
+  @media (max-width:760px){footer.site .cols{grid-template-columns:1fr}}
+  footer.site h4{color:#fff;font-size:.95rem;margin:0 0 12px;letter-spacing:.04em}
+  footer.site a,footer.site p{color:#b8ccbd;font-size:.9rem;line-height:1.8;margin:0}
+  footer.site a:hover{color:#fff}
+  .foot-brand{display:flex;align-items:center;gap:11px;color:#fff;font-weight:800;font-size:1.15rem;margin-bottom:12px}
+  .legal{border-top:1px solid rgba(255,255,255,.12);margin-top:30px;padding-top:20px;
+    font-size:.82rem;color:#8fa896;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand"><span class="logo"><svg viewBox="0 0 108 108" aria-hidden="true"><path fill="#6B8E7B" d="M54,28 C38,28 26,38 26,52 C26,60 30,66 36,70 L36,82 L48,74 C50,74 52,75 54,75 C70,75 82,65 82,52 C82,38 70,28 54,28 Z"/><path fill="#fff" d="M40,48 Q40,44 44,44 Q48,44 48,48 Q48,52 44,52 Q40,52 40,48 Z"/><path fill="#fff" d="M60,48 Q60,44 64,44 Q68,44 68,48 Q68,52 64,52 Q60,52 60,48 Z"/><path fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" d="M46,60 Q54,66 62,60"/></svg></span> Papoter</div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#modes">How it runs</a>
+      <a href="#gallery">Screens</a>
+      <a href="#privacy">Privacy</a>
+    </div>
+    <a class="btn btn-primary" href="#get" style="padding:9px 18px;background:var(--green-800);color:#fff">Get the app</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <span class="pill">🔒 On-device · Ollama · Ollama Cloud</span>
+      <h1>Private AI chat<br>that feels like <span class="accent">texting a friend.</span></h1>
+      <p class="lead">
+        Papoter runs powerful language models right on your phone — or over your own Ollama server and
+        Ollama Cloud. Generate images and music, analyse photos, read PDFs, and chat offline. No account, no fuss.
+      </p>
+      <div class="cta">
+        <a class="btn btn-primary" href="#get">Get started</a>
+        <a class="btn btn-ghost" href="#features">See features</a>
+      </div>
+      <div class="subnote">Version 1.0 · Android · Kid-safe guardrail on by default</div>
+    </div>
+    <div class="hero-art">
+      <div class="phone tilt-l"><img src="img/Screenshot_20260502_213601_Papoter.jpg" alt="Papoter chat conversation"></div>
+      <div class="phone tilt-r"><img src="img/Screenshot_20260705_211411_Papoter.jpg" alt="Papoter generating an image in chat"></div>
+    </div>
+  </div>
+</header>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="wrap center">
+    <span class="eyebrow">Everything in one chat</span>
+    <h2 class="title">A whole toolkit, quietly built in</h2>
+    <p class="section-intro">Papoter isn't just a text box. Ask it to make a picture, hum a tune, read a document, or check the weather — it figures out the right tool and does it, right in the conversation.</p>
+    <div class="grid">
+      <div class="card"><div class="ic">🔒</div><h3>Fully on-device</h3><p>Run models locally with llama.cpp. Works offline — your prompts and replies never leave your phone.</p></div>
+      <div class="card"><div class="ic">☁️</div><h3>Ollama &amp; Ollama Cloud</h3><p>Point at your own Ollama server on your LAN, or sign in to Ollama Cloud with an API key and pick a hosted model.</p></div>
+      <div class="card"><div class="ic">🎨</div><h3>Image generation</h3><p>Ask for a picture and get one in the chat, with a one-tap save. On-device Stable Diffusion first, keyless fallback.</p></div>
+      <div class="card"><div class="ic">🎵</div><h3>Music &amp; audio</h3><p>Generate short music or sound clips that play right inside the conversation, with download.</p></div>
+      <div class="card"><div class="ic">👁️</div><h3>See &amp; read</h3><p>Attach a photo for vision analysis, or drop in a PDF and Papoter reads it as clean, model-ready text.</p></div>
+      <div class="card"><div class="ic">🛠️</div><h3>Built-in tools</h3><p>Web search, current time, location, weather and trending news — called automatically when you need them.</p></div>
+      <div class="card"><div class="ic">🛡️</div><h3>Kid-safe guardrail</h3><p>A Llama&nbsp;Guard-style filter screens every prompt before it reaches any model. On by default.</p></div>
+      <div class="card"><div class="ic">⚡</div><h3>Streaming + stop</h3><p>Watch replies arrive token by token, and tap stop any time to keep what's already there.</p></div>
+      <div class="card"><div class="ic">🕘</div><h3>History &amp; export</h3><p>Conversations are saved locally, auto-titled, and exportable as a clean text transcript.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- MODES -->
+<section id="modes" class="modes">
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow">You're in control</span>
+      <h2 class="title">Three ways to run a model</h2>
+      <p class="section-intro">Choose the balance of privacy, power and convenience that fits the moment.</p>
+    </div>
+    <div class="mode-row">
+      <div class="mode">
+        <div class="num">01</div>
+        <h3>On your device</h3>
+        <p>Models run natively via llama.cpp. Completely offline and completely private — nothing is transmitted anywhere.</p>
+        <span class="badge">Most private</span>
+      </div>
+      <div class="mode">
+        <div class="num">02</div>
+        <h3>Your Ollama server</h3>
+        <p>Connect to an Ollama instance on your home network. Your data stays on hardware you own and control.</p>
+        <span class="badge">Your hardware</span>
+      </div>
+      <div class="mode">
+        <div class="num">03</div>
+        <h3>Ollama Cloud</h3>
+        <p>Add your API key to reach large hosted models — the cloud catalog is ready to pick from the moment you connect.</p>
+        <span class="badge">Most powerful</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="wrap center">
+    <span class="eyebrow">A closer look</span>
+    <h2 class="title">Clean, casual, and calm</h2>
+    <p class="section-intro">A warm Material design that gets out of the way, so the conversation is the star.</p>
+    <div class="gallery">
+      <figure class="shot"><img src="img/Screenshot_20260502_213601_Papoter.jpg" alt="Chatting with Papoter"><figcaption>Everyday chat</figcaption></figure>
+      <figure class="shot"><img src="img/Screenshot_20260705_211411_Papoter.jpg" alt="Image generation in Papoter"><figcaption>Make an image</figcaption></figure>
+      <figure class="shot"><img src="img/Screenshot_20260502_213710_Papoter.jpg" alt="Server settings"><figcaption>Connect a server</figcaption></figure>
+      <figure class="shot"><img src="img/Screenshot_20260502_213813_Papoter.jpg" alt="Server health check"><figcaption>Health at a glance</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- PRIVACY -->
+<section id="privacy" style="padding-top:20px">
+  <div class="privacy">
+    <div>
+      <span class="eyebrow" style="color:#cfe0d3">Privacy by design</span>
+      <h2>Your conversations are yours.</h2>
+      <p>Papoter has no account and no analytics SDK of its own. Local models run entirely offline, and your chat history lives in a database on your device — not on our servers.</p>
+      <ul>
+        <li>On-device mode sends nothing, anywhere.</li>
+        <li>Remote calls happen only when you choose them.</li>
+        <li>Delete any chat in-app; uninstall clears it all.</li>
+      </ul>
+    </div>
+    <div style="text-align:center">
+      <a class="btn btn-primary" href="privacy_policy.html">Read the privacy policy →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section id="get" class="cta-final">
+  <div class="wrap">
+    <div class="box">
+      <span class="eyebrow">Now in testing</span>
+      <h2>Try Papoter</h2>
+      <p class="section-intro" style="margin:0 auto 22px">
+        An early testing release (v1.0). Bring your own on-device model, Ollama server, or Ollama Cloud key —
+        and start a private conversation.
+      </p>
+      <a class="btn btn-primary" href="privacy_policy.html" style="margin-right:8px">Privacy policy</a>
+      <a class="btn btn-primary" href="mailto:ananya102343@gmail.com" style="background:var(--sand);color:var(--green-900)">Contact developer</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <div class="foot-brand"><span class="logo"><svg viewBox="0 0 108 108" aria-hidden="true"><path fill="#6B8E7B" d="M54,28 C38,28 26,38 26,52 C26,60 30,66 36,70 L36,82 L48,74 C50,74 52,75 54,75 C70,75 82,65 82,52 C82,38 70,28 54,28 Z"/><path fill="#fff" d="M40,48 Q40,44 44,44 Q48,44 48,48 Q48,52 44,52 Q40,52 40,48 Z"/><path fill="#fff" d="M60,48 Q60,44 64,44 Q68,44 68,48 Q68,52 64,52 Q60,52 60,48 Z"/><path fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" d="M46,60 Q54,66 62,60"/></svg></span> Papoter</div>
+        <p>A privacy-first Android chat client for local &amp; remote AI models.<br>© 2026 A for Arts and Crafts.</p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <a href="#features">Features</a><br>
+        <a href="#modes">How it runs</a><br>
+        <a href="#gallery">Screenshots</a><br>
+        <a href="privacy_policy.html">Privacy policy</a>
+      </div>
+      <div>
+        <h4>Developer</h4>
+        <p>Ananya Zabin<br>A for Arts and Crafts<br>Albuquerque, NM, USA<br>
+        <a href="mailto:ananya102343@gmail.com">ananya102343@gmail.com</a></p>
+      </div>
+    </div>
+    <div class="legal">
+      <span>Papoter · version 1.0</span>
+      <span>AI can make mistakes — verify anything important.</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
