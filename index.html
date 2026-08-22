@@ -89,7 +89,7 @@ section{padding:88px 0;border-bottom:1px solid var(--line)}
 .shead{display:flex;align-items:baseline;gap:16px;margin-bottom:38px;flex-wrap:wrap}
 .shead h2{font-family:var(--display);font-weight:700;font-size:clamp(1.6rem,3.4vw,2.2rem);letter-spacing:-.02em;margin:0}
 .shead .tag{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.prose{max-width:66ch;color:#C6CEDC}
+.prose{max-width:none;color:#C6CEDC}
 .prose p{margin:0 0 16px}
 .prose strong{color:var(--ink);font-weight:600}
 
@@ -102,7 +102,7 @@ section{padding:88px 0;border-bottom:1px solid var(--line)}
 .role.lead{color:#FFCFAF;background:rgba(242,118,46,.14);border:1px solid rgba(242,118,46,.35)}
 .role.contrib{color:#CFC0FF;background:rgba(139,92,246,.13);border:1px solid rgba(139,92,246,.32)}
 .meta{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin:0 0 16px;letter-spacing:.03em}
-.proj p.desc{margin:0 0 20px;color:#C6CEDC;max-width:70ch}
+.proj p.desc{margin:0 0 20px;color:#C6CEDC;max-width:none}
 .stats{display:flex;flex-wrap:wrap;gap:26px;padding-top:18px;border-top:1px solid var(--line)}
 .stat .n{font-family:var(--display);font-weight:700;font-size:1.35rem;letter-spacing:-.02em;display:block;line-height:1.2}
 .stat .l{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
@@ -133,7 +133,7 @@ section{padding:88px 0;border-bottom:1px solid var(--line)}
 .job .when{font-family:var(--mono);font-size:11.5px;color:var(--muted);letter-spacing:.04em}
 .job h3{font-family:var(--display);font-weight:500;font-size:1.06rem;margin:4px 0 3px}
 .job .org{font-size:15px;color:#AFB9CA;margin:0 0 7px}
-.job p.d{margin:0;font-size:15px;color:#C6CEDC;max-width:64ch}
+.job p.d{margin:0;font-size:15px;color:#C6CEDC;max-width:none}
 
 /* ---------- contact ---------- */
 footer{padding:88px 0 60px}
@@ -403,7 +403,7 @@ footer{padding:88px 0 60px}
 <footer id="contact">
   <div class="wrap cta rv">
     <h2>Let's talk.</h2>
-    <p class="prose" style="margin-bottom:30px">I'm looking for machine learning engineering, applied AI, and
+    <p class="prose" style="margin-bottom:30px;max-width:none;font-size:1.16rem;line-height:1.7">I'm looking for machine learning engineering, applied AI, and
       research roles — particularly in computer vision, biometrics, fraud and deepfake detection, or agentic
       systems. Open to relocation anywhere in the United States.</p>
     <div class="actions">
