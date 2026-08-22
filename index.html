@@ -10,9 +10,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --void:#0B0E14;
-  --panel:#131823;
-  --line:#232A3A;
+  --void:#061021;
+  --panel:#0B1B33;
+  --line:#1C2E4A;
   --visible:#3B82D9;
   --nir:#8B5CF6;
   --mwir:#F2762E;
@@ -40,7 +40,7 @@ a{color:inherit}
 
 /* ---------- nav ---------- */
 nav{position:fixed;top:3px;left:0;right:0;z-index:50;
-  background:rgba(11,14,20,.82);backdrop-filter:blur(10px);
+  background:rgba(6,16,33,.85);backdrop-filter:blur(10px);
   border-bottom:1px solid var(--line)}
 nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:20px}
 .brand{font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none}
@@ -55,7 +55,7 @@ header::after{content:"";position:absolute;inset:auto 0 0 0;height:1px;backgroun
 .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0 0 26px}
 h1{font-family:var(--display);font-weight:700;font-size:clamp(2.5rem,6.4vw,4.6rem);line-height:1.03;letter-spacing:-.025em;margin:0 0 8px}
 .h1sub{font-family:var(--display);font-weight:400;font-size:clamp(1.05rem,2.3vw,1.5rem);color:var(--muted);letter-spacing:-.01em;margin:0 0 34px}
-.lede{max-width:60ch;font-size:1.13rem;color:#C6CEDC;margin:0 0 38px}
+.lede{max-width:none;font-size:1.16rem;line-height:1.7;color:#C6CEDC;margin:0 0 38px}
 .lede strong{color:var(--ink);font-weight:600}
 .actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
 .btn{font-family:var(--mono);font-size:12.5px;letter-spacing:.07em;text-decoration:none;
@@ -95,7 +95,7 @@ section{padding:88px 0;border-bottom:1px solid var(--line)}
 
 /* ---------- projects ---------- */
 .proj{border:1px solid var(--line);border-radius:3px;background:var(--panel);padding:30px 30px 26px;margin-bottom:20px;transition:border-color .25s}
-.proj:hover{border-color:#33405A}
+.proj:hover{border-color:#2E4770}
 .ptop{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;align-items:flex-start;margin-bottom:6px}
 .proj h3{font-family:var(--display);font-weight:700;font-size:1.32rem;letter-spacing:-.015em;margin:0}
 .role{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:5px 11px;border-radius:2px;white-space:nowrap}
@@ -179,6 +179,7 @@ footer{padding:88px 0 60px}
       industry engineering, and recent work in LLM and agentic AI systems.</p>
     <div class="actions">
       <a class="btn solid" href="#research">See the research</a>
+      <a class="btn" href="#experience">Experience</a>
       <a class="btn" href="https://scholar.google.com/citations?user=vHIdpRsAAAAJ">Google Scholar</a>
       <a class="btn" href="https://github.com/azabin">GitHub</a>
       <a class="btn" href="https://linkedin.com/in/azabin">LinkedIn</a>
