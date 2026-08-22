@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ananya Zabin — Computer Vision &amp; Machine Learning</title>
+<meta name="description" content="Ananya Zabin — PhD candidate in Computer Engineering working on multispectral biometric recognition, deep learning, and applied AI.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --void:#0B0E14;
+  --panel:#131823;
+  --line:#232A3A;
+  --visible:#3B82D9;
+  --nir:#8B5CF6;
+  --mwir:#F2762E;
+  --ink:#E6EAF2;
+  --muted:#8892A6;
+  --display:'Space Grotesk',system-ui,sans-serif;
+  --body:'Source Serif 4',Georgia,serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --wrap:1080px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--void);color:var(--ink);
+  font-family:var(--body);font-size:17px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 28px}
+a{color:inherit}
+
+/* ---------- spectral rail (signature) ---------- */
+.rail{position:fixed;top:0;left:0;right:0;height:3px;z-index:60;
+  background:linear-gradient(90deg,var(--visible) 0%,#6366F1 32%,var(--nir) 52%,#C2410C 78%,var(--mwir) 100%);
+  transform-origin:0 50%;transform:scaleX(0);transition:transform .12s linear}
+
+/* ---------- nav ---------- */
+nav{position:fixed;top:3px;left:0;right:0;z-index:50;
+  background:rgba(11,14,20,.82);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:20px}
+.brand{font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none}
+.navlinks{display:flex;gap:26px}
+.navlinks a{font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--muted);text-decoration:none;padding:4px 0;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
+.navlinks a:hover,.navlinks a:focus-visible{color:var(--ink);border-color:var(--mwir)}
+@media(max-width:760px){.navlinks{display:none}}
+
+/* ---------- hero ---------- */
+header{padding:170px 0 92px;position:relative;overflow:hidden}
+header::after{content:"";position:absolute;inset:auto 0 0 0;height:1px;background:var(--line)}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0 0 26px}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(2.5rem,6.4vw,4.6rem);line-height:1.03;letter-spacing:-.025em;margin:0 0 8px}
+.h1sub{font-family:var(--display);font-weight:400;font-size:clamp(1.05rem,2.3vw,1.5rem);color:var(--muted);letter-spacing:-.01em;margin:0 0 34px}
+.lede{max-width:60ch;font-size:1.13rem;color:#C6CEDC;margin:0 0 38px}
+.lede strong{color:var(--ink);font-weight:600}
+.actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.btn{font-family:var(--mono);font-size:12.5px;letter-spacing:.07em;text-decoration:none;
+  padding:11px 20px;border:1px solid var(--line);border-radius:2px;color:var(--ink);
+  transition:border-color .2s,background .2s,transform .2s}
+.btn:hover,.btn:focus-visible{border-color:var(--mwir);background:rgba(242,118,46,.09);transform:translateY(-1px)}
+.btn.solid{background:var(--ink);color:var(--void);border-color:var(--ink);font-weight:500}
+.btn.solid:hover{background:#fff;border-color:#fff}
+.status{font-family:var(--mono);font-size:12px;color:var(--muted);display:flex;align-items:center;gap:9px;margin-top:30px}
+.dot{width:7px;height:7px;border-radius:50%;background:#3FBF7F;box-shadow:0 0 0 3px rgba(63,191,127,.16)}
+
+/* ---------- spectrum figure ---------- */
+.spectrum{margin:64px 0 0;border:1px solid var(--line);border-radius:3px;background:var(--panel);padding:24px 26px 20px}
+.spectrum h2{font-family:var(--mono);font-size:11.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);font-weight:400;margin:0 0 20px}
+.bands{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;border-radius:2px;overflow:hidden}
+.band{padding:16px 15px 15px;position:relative}
+.band.v{background:linear-gradient(180deg,rgba(59,130,217,.20),rgba(59,130,217,.05))}
+.band.n{background:linear-gradient(180deg,rgba(139,92,246,.20),rgba(139,92,246,.05))}
+.band.m{background:linear-gradient(180deg,rgba(242,118,46,.20),rgba(242,118,46,.05))}
+.band .nm{font-family:var(--mono);font-size:11px;color:var(--muted);display:block;margin-bottom:6px}
+.band .nme{font-family:var(--display);font-weight:500;font-size:14.5px;letter-spacing:.02em}
+.band .use{font-size:14px;color:#AFB9CA;margin-top:5px;line-height:1.45}
+.band::before{content:"";position:absolute;top:0;left:0;right:0;height:2px}
+.band.v::before{background:var(--visible)}
+.band.n::before{background:var(--nir)}
+.band.m::before{background:var(--mwir)}
+@media(max-width:700px){.bands{grid-template-columns:1fr}}
+
+/* ---------- sections ---------- */
+section{padding:88px 0;border-bottom:1px solid var(--line)}
+.shead{display:flex;align-items:baseline;gap:16px;margin-bottom:38px;flex-wrap:wrap}
+.shead h2{font-family:var(--display);font-weight:700;font-size:clamp(1.6rem,3.4vw,2.2rem);letter-spacing:-.02em;margin:0}
+.shead .tag{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.prose{max-width:66ch;color:#C6CEDC}
+.prose p{margin:0 0 16px}
+.prose strong{color:var(--ink);font-weight:600}
+
+/* ---------- projects ---------- */
+.proj{border:1px solid var(--line);border-radius:3px;background:var(--panel);padding:30px 30px 26px;margin-bottom:20px;transition:border-color .25s}
+.proj:hover{border-color:#33405A}
+.ptop{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;align-items:flex-start;margin-bottom:6px}
+.proj h3{font-family:var(--display);font-weight:700;font-size:1.32rem;letter-spacing:-.015em;margin:0}
+.role{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:5px 11px;border-radius:2px;white-space:nowrap}
+.role.lead{color:#FFCFAF;background:rgba(242,118,46,.14);border:1px solid rgba(242,118,46,.35)}
+.role.contrib{color:#CFC0FF;background:rgba(139,92,246,.13);border:1px solid rgba(139,92,246,.32)}
+.meta{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin:0 0 16px;letter-spacing:.03em}
+.proj p.desc{margin:0 0 20px;color:#C6CEDC;max-width:70ch}
+.stats{display:flex;flex-wrap:wrap;gap:26px;padding-top:18px;border-top:1px solid var(--line)}
+.stat .n{font-family:var(--display);font-weight:700;font-size:1.35rem;letter-spacing:-.02em;display:block;line-height:1.2}
+.stat .l{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.v .n{color:var(--visible)}.n-c .n{color:var(--nir)}.m .n{color:var(--mwir)}
+
+/* ---------- publications ---------- */
+.pub{display:grid;grid-template-columns:36px 1fr;gap:18px;padding:19px 0;border-bottom:1px solid var(--line)}
+.pub:last-child{border-bottom:none}
+.pub .idx{font-family:var(--mono);font-size:11.5px;color:var(--muted);padding-top:4px}
+.pub .t{margin:0 0 5px;font-size:16.5px;line-height:1.45}
+.pub .a{font-family:var(--mono);font-size:11.5px;color:var(--muted);line-height:1.6}
+.pub .a em{color:#A9B4C6;font-style:normal}
+.first{color:var(--mwir)}
+
+/* ---------- skills ---------- */
+.skills{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+.sk{background:var(--panel);padding:22px 24px}
+.sk h3{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--mwir);font-weight:400;margin:0 0 11px}
+.sk p{margin:0;font-size:15px;color:#C6CEDC;line-height:1.6}
+@media(max-width:700px){.skills{grid-template-columns:1fr}}
+
+/* ---------- timeline ---------- */
+.tl{border-left:1px solid var(--line);padding-left:26px;margin-left:6px}
+.job{position:relative;padding-bottom:30px}
+.job:last-child{padding-bottom:0}
+.job::before{content:"";position:absolute;left:-31px;top:7px;width:9px;height:9px;border-radius:50%;background:var(--void);border:1px solid var(--muted)}
+.job.now::before{background:var(--mwir);border-color:var(--mwir)}
+.job .when{font-family:var(--mono);font-size:11.5px;color:var(--muted);letter-spacing:.04em}
+.job h3{font-family:var(--display);font-weight:500;font-size:1.06rem;margin:4px 0 3px}
+.job .org{font-size:15px;color:#AFB9CA;margin:0 0 7px}
+.job p.d{margin:0;font-size:15px;color:#C6CEDC;max-width:64ch}
+
+/* ---------- contact ---------- */
+footer{padding:88px 0 60px}
+.cta h2{font-family:var(--display);font-weight:700;font-size:clamp(1.8rem,4vw,2.6rem);letter-spacing:-.025em;margin:0 0 16px}
+.cmeta{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:44px;padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+/* ---------- motion ---------- */
+.rv{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .rv{opacity:1;transform:none;transition:none}
+  .btn:hover{transform:none}
+}
+:focus-visible{outline:2px solid var(--mwir);outline-offset:3px}
+</style>
+</head>
+<body>
+
+<div class="rail" id="rail"></div>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#top">Ananya Zabin</a>
+    <div class="navlinks">
+      <a href="#research">Research</a>
+      <a href="#publications">Publications</a>
+      <a href="#skills">Skills</a>
+      <a href="#experience">Experience</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header id="top">
+  <div class="wrap">
+    <p class="eyebrow">Computer Engineering · Deep Learning · Biometrics · Computer Vision · LLM Engineering</p>
+    <h1>Ananya Zabin</h1>
+    <p class="h1sub">Computer vision &amp; machine learning — biometrics across the imaging spectrum</p>
+    <p class="lede">I build and evaluate deep learning systems that recognize people from images most
+      cameras never see — <strong>near-infrared and thermal as well as visible light</strong>. PhD candidate
+      in Computer Engineering with seven peer-reviewed publications, a decade of combined research and
+      industry engineering, and recent work in LLM and agentic AI systems.</p>
+    <div class="actions">
+      <a class="btn solid" href="#research">See the research</a>
+      <a class="btn" href="https://scholar.google.com/citations?user=vHIdpRsAAAAJ">Google Scholar</a>
+      <a class="btn" href="https://github.com/azabin">GitHub</a>
+      <a class="btn" href="https://linkedin.com/in/azabin">LinkedIn</a>
+    </div>
+    <p class="status"><span class="dot"></span> Open to ML engineering, applied AI, and research roles · U.S. Permanent Resident, no sponsorship required</p>
+
+    <div class="spectrum">
+      <h2>Where the work happens</h2>
+      <div class="bands">
+        <div class="band v">
+          <span class="nm">380–750 nm</span>
+          <span class="nme">Visible</span>
+          <p class="use">Face, iris, and periocular recognition; camera sensor origin identification.</p>
+        </div>
+        <div class="band n">
+          <span class="nm">750–2500 nm</span>
+          <span class="nme">Near-infrared</span>
+          <p class="use">Iris matching under disease conditions and across sensor types.</p>
+        </div>
+        <div class="band m">
+          <span class="nm">3–5 µm</span>
+          <span class="nme">Mid-wave infrared</span>
+          <p class="use">Thermal face capture at long range, and thermal-to-visible synthesis.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="research">
+  <div class="wrap">
+    <div class="shead rv"><h2>Research</h2><span class="tag">Three programs at MILAB</span></div>
+    <p class="prose rv" style="margin-bottom:34px">Work at the University of Georgia's Multispectral Imagery Lab
+      under Dr. Thirimachos Bourlai, spanning dataset construction, matcher design, and evaluation under
+      conditions where recognition normally breaks down — disease, occlusion, darkness, and distance.</p>
+
+    <article class="proj rv">
+      <div class="ptop">
+        <h3>AIROD-21 — Iris recognition under ocular disease</h3>
+        <span class="role lead">Lead student</span>
+      </div>
+      <p class="meta">FBI / WVU Research Corporation cooperative agreement · May 2021 – Aug 2023 · NIR + visible</p>
+      <p class="desc">Cataracts, glaucoma, and surgical changes alter the iris itself, so a matcher trained on
+        healthy eyes quietly degrades on the population that most needs identifying. I measured that degradation
+        and built systems to work around it: a ResNet-50 matcher on VGGFace2 weights producing 2,048-dimensional
+        embeddings, benchmarked against a commercial SDK and two research algorithms; a manual segmentation tool
+        that removed segmentation error as a confound; GP-GAN synthesis to overcome having only one subject per
+        rare pathology; and a healthy-versus-diseased classifier. All four contract deliverables closed at 100%.</p>
+      <div class="stats">
+        <div class="stat n-c"><span class="n">99.8%</span><span class="l">Visible classification</span></div>
+        <div class="stat n-c"><span class="n">98.8%</span><span class="l">NIR classification</span></div>
+        <div class="stat n-c"><span class="n">2,996</span><span class="l">Diseased iris images</span></div>
+        <div class="stat n-c"><span class="n">4</span><span class="l">Matchers benchmarked</span></div>
+      </div>
+    </article>
+
+    <article class="proj rv">
+      <div class="ptop">
+        <h3>FID-2019 — Face and iris data collection</h3>
+        <span class="role lead">Lead student</span>
+      </div>
+      <p class="meta">Oct 2019 – Jan 2023 · West Virginia University → University of Georgia · Visible + NIR</p>
+      <p class="desc">A paired face-and-iris collection built subject by subject across two universities and a
+        pandemic that paused it for nearly two years. I ran recruitment, scheduling, equipment, and the
+        collection team, owned IRB consent and compliance including protocol amendments and participant
+        withdrawals, and wrote the final report — including the demographic analysis and a contrast-based
+        image-quality study comparing sensors across capture distances. The dataset now serves as a healthy
+        baseline for other studies, including AIROD-21.</p>
+      <div class="stats">
+        <div class="stat v"><span class="n">801</span><span class="l">Enrolled subjects</span></div>
+        <div class="stat v"><span class="n">4</span><span class="l">Sensor types</span></div>
+        <div class="stat v"><span class="n">3</span><span class="l">Illumination levels</span></div>
+        <div class="stat v"><span class="n">9</span><span class="l">Iris gaze directions</span></div>
+      </div>
+    </article>
+
+    <article class="proj rv">
+      <div class="ptop">
+        <h3>MILAB-VTF(B) — Long-range thermal-to-visible faces</h3>
+        <span class="role contrib">Contributing researcher</span>
+      </div>
+      <p class="meta">Co-author, IEEE Trans. Biometrics, Behavior &amp; Identity Science, 2024 · MWIR + visible</p>
+      <p class="desc">A paired thermal and visible face dataset captured outdoors at ranges up to 400 metres,
+        where atmospheric turbulence and tiny faces make verification genuinely hard. I contributed
+        distance-classification and annotation-audit work supporting labeling quality across the collection,
+        and separately led a first-author study evaluating nine pre-trained CNN matchers on periocular and
+        binocular regions for occlusion-resilient recognition using this data.</p>
+      <div class="stats">
+        <div class="stat m"><span class="n">400</span><span class="l">Subjects</span></div>
+        <div class="stat m"><span class="n">400 m</span><span class="l">Maximum standoff</span></div>
+        <div class="stat m"><span class="n">9</span><span class="l">CNN matchers evaluated</span></div>
+      </div>
+    </article>
+
+    <article class="proj rv">
+      <div class="ptop">
+        <h3>FaceSensor-ID — Which camera took this photo?</h3>
+        <span class="role lead">First author</span>
+      </div>
+      <p class="meta">IEEE SoutheastCon 2024 · Visible + NIR</p>
+      <p class="desc">Identifying the originating camera sensor from a single face image — a provenance question
+        with direct bearing on image forensics and fraud detection. A transfer-learning system over ResNet50,
+        InceptionV3, EfficientNetB0, and VGG16, cross-validated across five benchmark datasets. Building it also
+        taught me a lesson I now apply by default: early accuracy looked suspiciously high until I rebuilt the
+        splits to be subject-disjoint, the same leakage trap that inflates results in fraud data.</p>
+      <div class="stats">
+        <div class="stat v"><span class="n">~99.8%</span><span class="l">Sensor identification</span></div>
+        <div class="stat v"><span class="n">6</span><span class="l">Camera sensors</span></div>
+        <div class="stat v"><span class="n">5</span><span class="l">Benchmark datasets</span></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="applied">
+  <div class="wrap">
+    <div class="shead rv"><h2>Applied AI</h2><span class="tag">2024 – present</span></div>
+    <div class="skills rv">
+      <div class="sk">
+        <h3>Agentic email system</h3>
+        <p>An autonomous agent built on the Anthropic Claude API and Model Context Protocol. It classifies
+          incoming mail, runs multi-step tool calls, pulls external context through the Tavily API, and drafts
+          responses — handing off to a human whenever its own confidence drops.</p>
+      </div>
+      <div class="sk">
+        <h3>Retrieval-augmented pipeline</h3>
+        <p>A multi-container RAG system in Haystack and Docker Compose covering the full retrieval lifecycle:
+          ingestion, chunking, embedding generation, vector storage, and semantic search.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="publications">
+  <div class="wrap">
+    <div class="shead rv"><h2>Publications</h2><span class="tag">7 total · 4 first-author</span></div>
+    <div class="rv">
+      <div class="pub"><span class="idx first">01</span><div>
+        <p class="t">FaceSensor-ID: A High-Precision Approach on Multi-Spectral (Visible and NIR) Camera Sensor Origin Identification</p>
+        <p class="a"><em>Zabin, A.</em>, &amp; Bourlai, T. — IEEE SoutheastCon, 2024</p></div></div>
+      <div class="pub"><span class="idx first">02</span><div>
+        <p class="t">Assessment of Face Recognition Algorithms over Periocular and Binocular Areas of the Human Face in the Event of Occlusion</p>
+        <p class="a"><em>Zabin, A.</em>, Benecchi, A., Gao, R., &amp; Bourlai, T. — Face Recognition Across the Imaging Spectrum, Springer</p></div></div>
+      <div class="pub"><span class="idx first">03</span><div>
+        <p class="t">On the Effectiveness of Visible and MWIR-Based Periocular Human Authentication When Wearing Face Masks</p>
+        <p class="a"><em>Zabin, A.</em>, Mokalla, S. R., &amp; Bourlai, T. — Disease Control Through Social Network Surveillance, Springer, 2022</p></div></div>
+      <div class="pub"><span class="idx first">04</span><div>
+        <p class="t">A Deep Learning-Based Approach to Iris Sensor Identification</p>
+        <p class="a"><em>Zabin, A.</em>, &amp; Bourlai, T. — IEEE/ACM ASONAM, 2020</p></div></div>
+      <div class="pub"><span class="idx">05</span><div>
+        <p class="t">Data and Algorithms for End-to-End Thermal Spectrum Face Verification</p>
+        <p class="a">Bourlai, T., Rose, J., Mokalla, S. R., <em>Zabin, A.</em>, et al. — IEEE Trans. Biometrics, Behavior, and Identity Science, 6(1), 2024</p></div></div>
+      <div class="pub"><span class="idx">06</span><div>
+        <p class="t">On Assessing the Impact of Ocular Pathologies on the Performance of Deep Learning Ocular-Based Recognition Systems in the Visible and NIR Bands</p>
+        <p class="a">Rose, J., <em>Zabin, A.</em>, &amp; Bourlai, T. — Face Recognition Across the Imaging Spectrum, Springer</p></div></div>
+      <div class="pub"><span class="idx">07</span><div>
+        <p class="t">Distance-Based Classification of Biometric Images: Leveraging Deep Learning Models</p>
+        <p class="a">Philippe, V., <em>Zabin, A.</em>, &amp; Bourlai, T. — Face Recognition Across the Imaging Spectrum, Springer</p></div></div>
+    </div>
+    <p class="prose rv" style="margin-top:26px;font-family:var(--mono);font-size:12.5px;color:var(--muted)">
+      Orange numbering marks first-author work. Full list and citations on
+      <a href="https://scholar.google.com/citations?user=vHIdpRsAAAAJ" style="color:var(--ink)">Google Scholar</a>.</p>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="shead rv"><h2>Toolkit</h2><span class="tag">What I build with</span></div>
+    <div class="skills rv">
+      <div class="sk"><h3>Deep learning</h3><p>PyTorch, TensorFlow, Keras, Scikit-learn, Hugging Face Transformers. CNNs, GANs (DCGAN, CycleGAN, CUT, Pix2Pix, GP-GAN), transfer learning and fine-tuning across ResNet, Inception, EfficientNet, and VGG families.</p></div>
+      <div class="sk"><h3>Computer vision</h3><p>OpenCV, classification, detection, segmentation, feature extraction. Multispectral imaging across visible, NIR, and thermal bands. Face, iris, periocular, and binocular biometrics; sensor interoperability.</p></div>
+      <div class="sk"><h3>LLM &amp; agentic AI</h3><p>Anthropic Claude API, OpenAI API, Ollama, Model Context Protocol, Haystack RAG, Tavily. Prompt engineering, embeddings and vector retrieval, model evaluation.</p></div>
+      <div class="sk"><h3>Data &amp; pipelines</h3><p>Large-scale image and video pipelines, quality control (BRISQUE, NIQE, PIQE, contrast metrics), annotation and audit workflows, augmentation, failure-to-enroll analysis.</p></div>
+      <div class="sk"><h3>Languages</h3><p>Python as primary, plus C++, C, Java, MATLAB, R, and SQL.</p></div>
+      <div class="sk"><h3>Infrastructure</h3><p>Docker and Docker Compose, Git, Perforce, Linux, multi-GPU training, Pandas, NumPy, Matplotlib, LaTeX, Agile.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap">
+    <div class="shead rv"><h2>Experience</h2><span class="tag">Research and industry</span></div>
+    <div class="tl rv">
+      <div class="job now">
+        <p class="when">2024 — Present</p>
+        <h3>Applied AI &amp; LLM engineering</h3>
+        <p class="org">Independent projects &amp; continuing research</p>
+        <p class="d">Agentic systems and retrieval pipelines; completed Andrew Ng's Agentic AI specialization at DeepLearning.AI. Continuing doctoral research and publication.</p>
+      </div>
+      <div class="job">
+        <p class="when">Jan 2021 — Nov 2024</p>
+        <h3>Graduate Research Assistant</h3>
+        <p class="org">University of Georgia — Multispectral Imagery Lab</p>
+        <p class="d">Model development across face, iris, and periocular recognition. Lead student on two federally funded projects. Mentored eight graduate and undergraduate researchers and guest-lectured in graduate machine learning courses.</p>
+      </div>
+      <div class="job">
+        <p class="when">Jan 2018 — Dec 2020</p>
+        <h3>Graduate Assistant</h3>
+        <p class="org">West Virginia University</p>
+        <p class="d">Iris sensor identification using transfer learning with quality-based data selection. Primary instructor for undergraduate Java Programming and Electrical Circuits.</p>
+      </div>
+      <div class="job">
+        <p class="when">Nov 2011 — Jul 2015</p>
+        <h3>Senior Software Engineer, Team Lead</h3>
+        <p class="org">Samsung R&amp;D Institute Bangladesh</p>
+        <p class="d">Sole technical owner of the bidirectional language engine — the C/C++ module rendering right-to-left and complex-script text across Samsung's global flagship fleet, in production for two and a half years. Led Android View Framework work for the Galaxy Note 4 Edge with Samsung Korea HQ. Global Samsung Idea Excellence Award for an OpenGL augmented-reality system.</p>
+      </div>
+      <div class="job">
+        <p class="when">Jul 2011 — Oct 2011</p>
+        <h3>Software Consultant</h3>
+        <p class="org">Southtech Limited</p>
+        <p class="d">Database architecture for a banking system; supported a successful CMMI Level-3 audit.</p>
+      </div>
+    </div>
+    <p class="prose rv" style="margin-top:32px;font-family:var(--mono);font-size:12.5px;color:var(--muted)">
+      PhD, Computer Engineering — University of Georgia · admitted to candidacy 2024 &nbsp;·&nbsp;
+      M.Sc. and B.Sc. (Honors), Computer Science &amp; Engineering — Jahangirnagar University</p>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap cta rv">
+    <h2>Let's talk.</h2>
+    <p class="prose" style="margin-bottom:30px">I'm looking for machine learning engineering, applied AI, and
+      research roles — particularly in computer vision, biometrics, fraud and deepfake detection, or agentic
+      systems. Open to relocation anywhere in the United States.</p>
+    <div class="actions">
+      <a class="btn solid" href="mailto:ananya.zabin@outlook.com">ananya.zabin@outlook.com</a>
+      <a class="btn" href="https://linkedin.com/in/azabin">LinkedIn</a>
+      <a class="btn" href="https://github.com/azabin">GitHub</a>
+      <a class="btn" href="https://scholar.google.com/citations?user=vHIdpRsAAAAJ">Scholar</a>
+    </div>
+    <div class="cmeta">
+      <span>Albuquerque, New Mexico</span>
+      <span>U.S. Permanent Resident · ITAR eligible</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var rail=document.getElementById('rail');
+  function onScroll(){
+    var h=document.documentElement.scrollHeight-window.innerHeight;
+    var p=h>0?Math.min(window.scrollY/h,1):0;
+    rail.style.transform='scaleX('+p+')';
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  onScroll();
+
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var items=document.querySelectorAll('.rv');
+  if(reduce||!('IntersectionObserver' in window)){
+    items.forEach(function(el){el.classList.add('in');});
+  }else{
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}
+      });
+    },{rootMargin:'0px 0px -40px 0px',threshold:.05});
+    items.forEach(function(el){io.observe(el);});
+  }
+})();
+</script>
+</body>
+</html>
